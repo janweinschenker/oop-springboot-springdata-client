@@ -1,7 +1,6 @@
 package de.andrena.springworkshop.dao;
 
 import de.andrena.springworkshop.dto.EventDTO;
-import de.andrena.springworkshop.dto.SpeakerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Resource;
@@ -55,14 +54,28 @@ public class EventDaoImpl implements EventDao {
 
     @Override
     public List<EventDTO> getEventsWithTitleContaining(String title) {
-        //not yet implemented :(
-        return null;
+        String path = "/events/search/findEventsByTitleContaining?title=" + title;
+        final UriComponentsBuilder apiUrlBuilder = UriComponentsBuilder.newInstance();
+        String url = apiUrlBuilder.scheme(scheme).host(host).path(path).build().toString();
+
+        Resources<Resource<EventDTO>>
+            events = sendRequest(url, new ParameterizedTypeReference<Resources<Resource<EventDTO>>>() {
+        });
+
+        return events.getContent().stream().map(Resource::getContent).collect(Collectors.toList());
     }
 
     @Override
     public List<EventDTO> getEventsWithDescriptionContaining(String description) {
-        //not yet implemented :(
-        return null;
+        String path = "/events/search/findEventsByDescriptionContaining?description=" + description;
+        final UriComponentsBuilder apiUrlBuilder = UriComponentsBuilder.newInstance();
+        String url = apiUrlBuilder.scheme(scheme).host(host).path(path).build().toString();
+
+        Resources<Resource<EventDTO>>
+            events = sendRequest(url, new ParameterizedTypeReference<Resources<Resource<EventDTO>>>() {
+        });
+
+        return events.getContent().stream().map(Resource::getContent).collect(Collectors.toList());
     }
 
 }

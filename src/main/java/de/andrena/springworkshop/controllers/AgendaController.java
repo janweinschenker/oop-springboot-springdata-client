@@ -13,9 +13,8 @@ public class AgendaController {
     @Autowired
     private EventFacade eventFacade;
 
-    @RequestMapping( value = "/agenda")
-    public String agenda(final Model model)
-    {
+    @RequestMapping(value = "/agenda")
+    public String agenda(final Model model) {
         model.addAttribute("events", eventFacade.getAllEvents());
         return "mainPage";
     }
@@ -23,6 +22,12 @@ public class AgendaController {
     @RequestMapping(value = "/search")
     public String searchByTitle(@RequestParam(value = "title", defaultValue = "") final String title, final Model model) {
         model.addAttribute("events", eventFacade.getEventWithTitle(title));
+        return "searchPage";
+    }
+
+    @RequestMapping(value = "/searchByDescription")
+    public String searchByDescription(@RequestParam(value = "description", defaultValue = "") final String description, final Model model) {
+        model.addAttribute("events", eventFacade.getEventsWithDescriptionContaining(description));
         return "searchPage";
     }
 
